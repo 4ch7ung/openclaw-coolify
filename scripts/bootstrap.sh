@@ -19,6 +19,10 @@ fi
 mkdir -p "$OPENCLAW_STATE" "$WORKSPACE_DIR"
 chmod 700 "$OPENCLAW_STATE"
 
+# 🖇️ Convenience Symlinks
+ln -sf "$WORKSPACE_DIR" /root/workspace 2>/dev/null || true
+ln -sf "$WORKSPACE_DIR" /root/workplace 2>/dev/null || true
+
 mkdir -p "$OPENCLAW_STATE/credentials"
 mkdir -p "$OPENCLAW_STATE/agents/main/sessions"
 chmod 700 "$OPENCLAW_STATE/credentials"

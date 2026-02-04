@@ -68,19 +68,18 @@ RUN mkdir -p -m 755 /etc/apt/keyrings && \
 # Install uv (Python tool manager)
 ENV UV_INSTALL_DIR="/usr/local/bin"
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-
 # Install Bun
 ENV BUN_INSTALL_NODE=0
-ENV BUN_INSTALL="/root/.bun"
+ENV BUN_INSTALL="/data/.bun"
 RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/* && \
     curl -fsSL https://bun.sh/install | bash
-ENV PATH="/root/.bun/bin:/root/.bun/install/global/bin:${PATH}"
+ENV PATH="/data/.bun/bin:/data/.bun/install/global/bin:${PATH}"
 
 # Install Vercel, Marp, QMD
 RUN bun install -g vercel @marp-team/marp-cli https://github.com/tobi/qmd && hash -r
 
 # Configure QMD Persistence
-ENV XDG_CACHE_HOME="/root/.openclaw/cache"
+ENV XDG_CACHE_HOME="/data/.cache"
 
 # Python tools
 RUN pip3 install ipython csvkit openpyxl python-docx pypdf botasaurus browser-use playwright --break-system-packages && \
@@ -95,7 +94,7 @@ RUN ln -s /usr/bin/fdfind /usr/bin/fd || true && \
 WORKDIR /app
 
 # ✅ FINAL PATH (important)
-ENV PATH="/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin:/root/.local/bin:/root/.npm-global/bin:/root/.bun/bin:/root/.bun/install/global/bin:/root/.claude/bin:/root/.kimi/bin:/root/go/bin"
+ENV PATH="/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin:/data/.local/bin:/data/.npm-global/bin:/data/.bun/bin:/data/.bun/install/global/bin:/data/.claude/bin:/data/.kimi/bin:/root/go/bin"
 
 # OpenClaw install
 ARG OPENCLAW_BETA=false
@@ -128,9 +127,8 @@ RUN bun install -g @openai/codex @google/gemini-cli opencode-ai @steipete/summar
 COPY . .
 
 # Specialized symlinks and permissions
-RUN ln -sf /root/.claude/bin/claude /usr/local/bin/claude || true && \
-    ln -sf /root/.kimi/bin/kimi /usr/local/bin/kimi || true && \
-    ln -sf /app/scripts/openclaw-approve.sh /usr/local/bin/openclaw-approve && \
+RUN ln -sf /data/.claude/bin/claude /usr/local/bin/claude 2>/dev/null || true && \
+    ln -sf /data/.kimi/bin/kimi /usr/local/bin/kimi 2>/dev/null || true && \
     ln -sf /app/scripts/openclaw-approve.sh /usr/local/bin/openclaw-approve && \
     chmod +x /app/scripts/*.sh /usr/local/bin/openclaw-approve
 

@@ -107,15 +107,15 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      LOG_LEVEL: info
-      POST: 1
-      CONTAINERS: 1
-      IMAGES: 1
-      NETWORKS: 1
-      INFO: 1
+      # Security: Only enable necessary Docker APIs
+      POST: 1       # Create containers
+      CONTAINERS: 1 # List/manage containers
+      IMAGES: 1     # Pull images
+      NETWORKS: 1   # Connect to networks
+      INFO: 1       # Version check
       VERSION: 1
-      EXEC: 1
-      EVENTS: 1
+      EXEC: 1       # Run commands (exec)
+      EVENTS: 1     # Listen for events (if needed)
 
   searxng:
     build:

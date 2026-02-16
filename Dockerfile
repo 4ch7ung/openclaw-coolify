@@ -112,6 +112,8 @@ RUN --mount=type=cache,target=/data/.bun/install/cache \
     bun pm -g untrusted && \
     bun install -g @openai/codex @google/gemini-cli opencode-ai @steipete/summarize @hyperbrowser/agent clawhub
 
+RUN npm i -g node-gyp
+
 # Install OpenClaw with npm cache mount
 RUN --mount=type=cache,target=/data/.npm \
     if [ "$OPENCLAW_BETA" = "true" ]; then \
